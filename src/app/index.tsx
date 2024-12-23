@@ -1,4 +1,5 @@
 import { View, Text, Button } from 'tamagui';
+
 import { useThemeStore } from '../stores/theme';
 
 const Page = () => {
