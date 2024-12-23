@@ -21,8 +21,6 @@ export const ThemeSheet = ({
   const setTheme = useThemeStore((state) => state.setTheme);
   const systemTheme = useColorScheme();
 
-  console.log({ systemTheme });
-
   const XStackStyles = {
     dsp: 'flex',
     flexDirection: 'row',
