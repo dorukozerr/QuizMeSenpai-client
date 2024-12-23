@@ -1,6 +1,6 @@
 import { View, Text, Button } from 'tamagui';
 
-import { useThemeStore } from '../stores/theme';
+import { useThemeStore } from '@/stores/theme';
 
 const Page = () => {
   const { activeTheme, setTheme } = useThemeStore();

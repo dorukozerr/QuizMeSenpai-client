@@ -3,8 +3,9 @@ import { httpBatchLink } from '@trpc/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TamaguiProvider, PortalProvider } from 'tamagui';
 
-import { trpc } from '../lib/trpc';
-import { useThemeStore } from '../stores/theme';
+import { trpc } from '@/lib/trpc';
+import { useThemeStore } from '@/stores/theme';
+
 import { tamaguiConfig } from '../../tamagui.config';
 
 const serverUrl = process.env.EXPO_PUBLIC_SERVER_URL;

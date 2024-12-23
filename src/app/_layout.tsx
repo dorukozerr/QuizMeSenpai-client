@@ -1,8 +1,8 @@
 import { SafeAreaView, StatusBar } from 'react-native';
 import { Slot } from 'expo-router';
 
-import { Providers } from '../providers';
-import { useThemeStore } from '../stores/theme';
+import { Providers } from '@/providers';
+import { useThemeStore } from '@/stores/theme';
 
 const RootLayout = () => {
   const activeTheme = useThemeStore((state) => state.activeTheme);
