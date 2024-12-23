@@ -17,7 +17,9 @@ const lightColors = {
   accentForeground: '#232323',
   border: '#A898B7',
   success: '#A3C0B6',
-  error: '#C47B7B'
+  error: '#C47B7B',
+  overlay: 'rgba(255, 255, 255, 0.5)',
+  shadow: 'rgba(226, 184, 199, 0.1)'
 };
 
 const darkColors = {
@@ -35,7 +37,9 @@ const darkColors = {
   accentForeground: '#F7F0F3',
   border: '#232323',
   success: '#A3C0B6',
-  error: '#E19191'
+  error: '#E19191',
+  overlay: 'rgba(0, 0, 0, 0.8)',
+  shadow: 'rgba(197, 163, 176, 0.1)'
 };
 
 const extendedTokens = createTokens({

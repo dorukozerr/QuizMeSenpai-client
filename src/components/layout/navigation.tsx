@@ -5,7 +5,6 @@ import { Gamepad, User, History } from '@tamagui/lucide-icons';
 
 export const Navigation = () => {
   const pathname = usePathname();
-  console.log(pathname);
 
   const linkStyles = (href: string) =>
     ({
@@ -36,11 +35,11 @@ export const Navigation = () => {
     {
       label: (
         <Fragment>
-          <User {...linkStyles('/profile')} />
-          <Text {...linkStyles('/profile')}>Settings</Text>
+          <User {...linkStyles('/settings')} />
+          <Text {...linkStyles('/settings')}>Settings</Text>
         </Fragment>
       ),
-      href: '/profile'
+      href: '/settings'
     }
   ];
 

@@ -12,7 +12,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint ./src/*",
-    "format": "prettier ./src/* --check"
+    "format": "prettier ./src --check"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.0",

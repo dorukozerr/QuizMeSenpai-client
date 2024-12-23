@@ -24,8 +24,7 @@ export const Sheet = ({
 
 export const SheetOverlay = ({ ...props }: YStackProps) => (
   <TamaguiSheet.Overlay
-    animation='slow'
-    bc='$semiTransparentBackground'
+    bc='$overlay'
     $platform-web={{ backdropFilter: 'blur(2px)' }}
     {...props}
   />

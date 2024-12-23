@@ -1,6 +1,6 @@
 import { useState, ReactNode } from 'react';
-import { httpBatchLink } from '@trpc/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { httpBatchLink } from '@trpc/react-query';
 import { TamaguiProvider, PortalProvider } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
