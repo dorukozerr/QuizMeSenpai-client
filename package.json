@@ -2,8 +2,10 @@
   "name": "quiz-me-senpai-client",
   "version": "1.0.0",
   "main": "index.ts",
+  "description": "Client application for QuizMeSenpai",
   "author": "Doruk Özer <dorukozer@protonmail.com>",
   "license": "MIT",
+  "repository": "git@github.com:dorukozerr/QuizMeSenpai-client.git",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
