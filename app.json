@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "quiz-me-senpai",
-    "slug": "quiz-me-senpai",
+    "slug": "quizmesenpai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,17 +13,25 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dorukozer.quizmesenpai"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dorukozer.quizmesenpai"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "quizmesenpai"
+    "scheme": "quizmesenpai",
+    "extra": {
+      "eas": {
+        "projectId": "47f59fb3-8233-48fd-a62d-3039af6bd3c7"
+      }
+    },
+    "owner": "dorukozer"
   }
 }
