@@ -13,7 +13,7 @@ const RootLayout = () => {
     <Providers>
       <SafeAreaView
         style={{
-          backgroundColor: activeTheme === 'dark' ? '#030712' : '#FFFFFF',
+          backgroundColor: activeTheme === 'dark' ? '#030303' : '#FFFFFF',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -26,7 +26,7 @@ const RootLayout = () => {
           backgroundColor={activeTheme === 'dark' ? '#030712' : '#FFFFFF'}
           animated={false}
         />
-        <View f={1}>
+        <View f={1} w='100%'>
           <Slot />
         </View>
         <Navigation />
