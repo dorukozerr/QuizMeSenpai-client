@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 export declare const appRouter: import('@trpc/server').CreateRouterInner<
   import('@trpc/server').RootConfig<{
     ctx: {

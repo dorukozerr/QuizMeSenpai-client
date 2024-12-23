@@ -80,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement, CustomButtonProps>(
       {...props}
     >
       <Text
-        w='100%'
+        w='max-content'
         h='100%'
         dsp='flex'
         jc='center'
