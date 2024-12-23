@@ -1,24 +1,28 @@
+import { SafeAreaView, StatusBar } from 'react-native';
 import { Slot } from 'expo-router';
-import { useColorScheme, SafeAreaView } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider
-} from '@react-navigation/native';
+import { useThemeStore } from '../stores/theme';
 
 import { tamaguiConfig } from '../../tamagui.config';
 
 const RootLayout = () => {
-  const colorScheme = useColorScheme();
+  const activeTheme = useThemeStore((state) => state.activeTheme);
 
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <SafeAreaView>
-          <Slot />
-        </SafeAreaView>
-      </ThemeProvider>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={activeTheme}>
+      <SafeAreaView
+        style={{
+          backgroundColor: activeTheme === 'dark' ? '#030712' : '#FFFFFF',
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        <StatusBar
+          backgroundColor={activeTheme === 'dark' ? '#030712' : '#FFFFFF'}
+          animated={false}
+        />
+        <Slot />
+      </SafeAreaView>
     </TamaguiProvider>
   );
 };
