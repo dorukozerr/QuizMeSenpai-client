@@ -7,12 +7,12 @@ const Page = () => {
 
   return (
     <View>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Text>QuizMeSenpai</Text>
       <Button
         variant='outlined'
         onPress={() => setTheme(activeTheme === 'dark' ? 'light' : 'dark')}
       >
-        Test Button
+        Change Theme
       </Button>
     </View>
   );
