@@ -1,7 +1,9 @@
 import { trpc } from '@/lib/trpc';
 
 export const useTrpc = () => {
-  const checkAuthQuery = trpc.auth.checkAuth.useQuery();
+  const checkAuthQuery = trpc.auth.checkAuth.useQuery(undefined, {
+    retry: false
+  });
 
   // const utils = trpc.useUtils();
 

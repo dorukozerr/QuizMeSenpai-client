@@ -45,14 +45,14 @@ export const Navigation = () => {
 
   return (
     <XStack
-      boc='$primary'
+      boc='$foreground'
       btw='$0.25'
       w='100%'
       dsp='flex'
       jc='center'
       ai='center'
       gap='$2'
-      pt='$4'
+      py='$4'
     >
       {links.map(({ label, href }, index) => (
         <Link key={`navigationLink-${index}`} href={href} asChild>

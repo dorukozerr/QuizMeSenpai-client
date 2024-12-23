@@ -1,0 +1,30 @@
+import { Text, YStack } from 'tamagui';
+import { useRouter } from 'expo-router';
+import { Lock } from '@tamagui/lucide-icons';
+
+import { Button } from '@/components/waifui/button';
+
+export const Unauthorized = () => {
+  const router = useRouter();
+
+  return (
+    <YStack
+      flex={1}
+      padding='$4'
+      justifyContent='center'
+      alignItems='center'
+      gap='$4'
+    >
+      <Lock size='$8' color='$muted' />
+      <Text fontSize='$8' fontWeight='bold' color='$gray12'>
+        Authentication Required
+      </Text>
+      <Text fontSize='$3' color='$gray11' textAlign='center'>
+        Please sign in to access this content
+      </Text>
+      <Button variant='outlined' onPress={() => router.push('/authentication')}>
+        Go to Login
+      </Button>
+    </YStack>
+  );
+};
