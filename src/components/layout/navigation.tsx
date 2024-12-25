@@ -46,7 +46,7 @@ export const Navigation = () => {
   return (
     <XStack
       boc='$foreground'
-      btw='$0.25'
+      btw='$0.5'
       w='100%'
       dsp='flex'
       jc='center'

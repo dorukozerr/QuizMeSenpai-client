@@ -69,7 +69,10 @@ export const ThemeSheet = ({
             <Button
               key={`themeSwitchButton-${index}`}
               variant='secondary'
-              onPress={onPress}
+              onPress={() => {
+                onPress();
+                onOpenChange();
+              }}
             >
               {label}
             </Button>

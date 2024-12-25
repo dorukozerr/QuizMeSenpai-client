@@ -15,11 +15,11 @@ export const Unauthorized = () => {
       alignItems='center'
       gap='$4'
     >
-      <Lock size='$8' color='$muted' />
-      <Text fontSize='$8' fontWeight='bold' color='$gray12'>
+      <Lock size='$8' color='$primary' />
+      <Text fontSize='$8' fontWeight='bold' color='$primary'>
         Authentication Required
       </Text>
-      <Text fontSize='$3' color='$gray11' textAlign='center'>
+      <Text fontSize='$3' color='$mutedForeground' textAlign='center'>
         Please sign in to access this content
       </Text>
       <Button variant='outlined' onPress={() => router.push('/authentication')}>

@@ -24,6 +24,7 @@ const RootLayout = () => {
       >
         <StatusBar
           backgroundColor={activeTheme === 'dark' ? '#030712' : '#FFFFFF'}
+          barStyle={activeTheme === 'dark' ? 'light-content' : 'dark-content'}
           animated={false}
         />
         <View f={1} w='100%'>
