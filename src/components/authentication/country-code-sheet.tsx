@@ -8,10 +8,12 @@ import { Button } from '@/components/waifui/button';
 
 export const CountryCodeSheet = ({
   open,
-  onOpenChange
+  onOpenChange,
+  onCountryCodeSelection
 }: {
   open: boolean;
   onOpenChange: () => void;
+  onCountryCodeSelection: (code: string) => void;
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -58,8 +60,10 @@ export const CountryCodeSheet = ({
                 .filter(({ name }) =>
                   name.toLowerCase().includes(searchTerm.toLowerCase())
                 )
-                .map(({ name, dialCode }) => (
+                .map(({ name, dialCode }, index) => (
                   <Button
+                    key={`countryCodeSelectItem-${index}`}
+                    onPress={() => onCountryCodeSelection(dialCode)}
                     h='max-content'
                     py='$2'
                     jc='flex-start'
