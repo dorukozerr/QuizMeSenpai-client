@@ -37,6 +37,7 @@ export const CountryCodeSheet = ({
             placeholder='Search...'
             onChangeText={setSearchTerm}
             w='75%'
+            autoFocus={true}
           />
           <Button
             size='icon'

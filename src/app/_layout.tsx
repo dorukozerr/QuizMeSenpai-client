@@ -1,13 +1,17 @@
 import { SafeAreaView, StatusBar } from 'react-native';
 import { Slot } from 'expo-router';
 import { View } from 'tamagui';
+import { ToastViewport } from '@tamagui/toast';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Providers } from '@/providers';
 import { useThemeStore } from '@/stores/theme';
 import { Navigation } from '@/components/layout/navigation';
+import { Toast } from '@/components/waifui/toast';
 
 const RootLayout = () => {
   const activeTheme = useThemeStore((state) => state.activeTheme);
+  const { left, top, right } = useSafeAreaInsets();
 
   return (
     <Providers>
@@ -29,8 +33,15 @@ const RootLayout = () => {
         />
         <View f={1} w='100%'>
           <Slot />
+          <Toast />
         </View>
         <Navigation />
+        <ToastViewport
+          flexDirection='column-reverse'
+          top={top}
+          left={left}
+          right={right}
+        />
       </SafeAreaView>
     </Providers>
   );

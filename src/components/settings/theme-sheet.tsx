@@ -68,7 +68,6 @@ export const ThemeSheet = ({
           {themeOptions.map(({ label, onPress }, index) => (
             <Button
               key={`themeSwitchButton-${index}`}
-              variant='secondary'
               onPress={() => {
                 onPress();
                 onOpenChange();

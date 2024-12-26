@@ -3,6 +3,7 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { YStack, Text, Input } from 'tamagui';
+import { useToastController } from '@tamagui/toast';
 
 import { useTrpc } from '@/hooks/use-trpc';
 import { Button } from '@/components/waifui/button';
@@ -33,6 +34,7 @@ export const StepTwo = ({
   const {
     authenticateMutation: { mutateAsync, isLoading }
   } = useTrpc();
+  const toast = useToastController();
 
   const onAuthenticate: SubmitHandler<AuthFormValues> = async ({ otp }) => {
     try {
@@ -40,10 +42,22 @@ export const StepTwo = ({
 
       if (res.success) {
         navigate('/');
+
+        toast.show('Success', {
+          myPreset: 'success',
+          duration: 5000,
+          message: 'Authentication successfull.'
+        });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('error =>', error);
-      // TODO: Add toast here.
+
+      toast.show('Error', {
+        myPreset: 'error',
+        duration: 5000,
+        message:
+          (error as { message?: string })?.message ?? 'Unknown server error.'
+      });
     }
   };
 
@@ -54,6 +68,8 @@ export const StepTwo = ({
         name='otp'
         render={({ field: { onChange, onBlur, value } }) => (
           <Input
+            autoCapitalize='none'
+            autoCorrect={false}
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

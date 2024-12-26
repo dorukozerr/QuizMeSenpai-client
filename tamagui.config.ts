@@ -80,3 +80,9 @@ declare module 'tamagui' {
     customTheme?: 'keta';
   }
 }
+
+declare module '@tamagui/toast' {
+  interface CustomData {
+    myPreset: 'error' | 'success' | 'warning';
+  }
+}

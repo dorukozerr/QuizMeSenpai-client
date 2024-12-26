@@ -2,6 +2,7 @@ import { useState, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/react-query';
 import { TamaguiProvider, PortalProvider } from 'tamagui';
+import { ToastProvider } from '@tamagui/toast';
 
 import { trpc } from '@/lib/trpc';
 import { useThemeStore } from '@/stores/theme';
@@ -25,7 +26,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <TamaguiProvider config={tamaguiConfig} defaultTheme={activeTheme}>
-          <PortalProvider shouldAddRootHost>{children}</PortalProvider>
+          <PortalProvider shouldAddRootHost>
+            <ToastProvider>{children}</ToastProvider>
+          </PortalProvider>
         </TamaguiProvider>
       </QueryClientProvider>
     </trpc.Provider>

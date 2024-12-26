@@ -1,6 +1,8 @@
 import { trpc } from '@/lib/trpc';
 
 export const useTrpc = () => {
+  const utils = trpc.useUtils();
+
   const loginMutation = trpc.auth.login.useMutation();
 
   const authenticateMutation = trpc.auth.authenticate.useMutation({
@@ -15,13 +17,15 @@ export const useTrpc = () => {
     onSuccess: () => utils.auth.checkAuth.invalidate()
   });
 
-  const utils = trpc.useUtils();
+  const updateUserMutation = trpc.user.update.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
+  });
 
   return {
     loginMutation,
     authenticateMutation,
     checkAuthQuery,
     logoutMutation,
-    utils
+    updateUserMutation
   };
 };
