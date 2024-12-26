@@ -32,7 +32,6 @@ const Page = () => {
       console.error('error =>', error);
 
       toast.show('Error', {
-        myPreset: 'error',
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'
@@ -51,7 +50,6 @@ const Page = () => {
         navigate('/');
 
         toast.show('Success', {
-          myPreset: 'success',
           duration: 5000,
           message: 'Authentication successfull.'
         });
@@ -60,7 +58,6 @@ const Page = () => {
       console.error('error =>', error);
 
       toast.show('Error', {
-        myPreset: 'error',
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'

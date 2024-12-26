@@ -57,8 +57,8 @@ export const UpdateProfileSheet = ({
 
       if (res.success) {
         onOpenChange();
+
         toast.show('Success', {
-          myPreset: 'success',
           duration: 5000,
           message: 'Username updated.'
         });
@@ -67,7 +67,6 @@ export const UpdateProfileSheet = ({
       console.error('error =>', error);
 
       toast.show('Error', {
-        myPreset: 'error',
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'
