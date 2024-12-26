@@ -4,7 +4,8 @@ import { Sheet as TamaguiSheet, XStackProps, YStackProps } from 'tamagui';
 export const Sheet = ({
   open,
   onOpenChange,
-  children
+  children,
+  ...props
 }: {
   open: boolean;
   onOpenChange: (flag: boolean) => void;
@@ -17,6 +18,7 @@ export const Sheet = ({
     zIndex={100_000}
     animation='quick'
     modal
+    {...props}
   >
     {children}
   </TamaguiSheet>

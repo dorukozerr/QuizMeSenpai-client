@@ -60,7 +60,7 @@ export const ThemeSheet = ({
   ];
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet {...{ open, onOpenChange }}>
       <SheetOverlay />
       <SheetHandle />
       <SheetFrame>

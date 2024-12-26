@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { Pressable } from 'react-native';
-import { Spinner, ScrollView, View, H2, H6, Separator } from 'tamagui';
+import { Spinner, ScrollView, View, H2, Text, Separator } from 'tamagui';
 
 import { useTrpc } from '@/hooks/use-trpc';
 import { Button } from '@/components/waifui/button';
@@ -30,12 +30,12 @@ const Page = () => {
           <H2>Settings</H2>
           <Separator w='100%' boc='$foreground' />
           <Pressable onPress={() => setThemeSheetState({ open: true })}>
-            <H6>Theme</H6>
+            <Text fos='$5'>Theme</Text>
           </Pressable>
           {isSuccess ? (
             <Fragment>
               <Separator w='100%' boc='$foreground' />
-              <H6>Profile</H6>
+              <Text fos='$5'>Profile</Text>
               <Separator w='100%' boc='$foreground' />
               <Button variant='outlined'>Logout</Button>
             </Fragment>
