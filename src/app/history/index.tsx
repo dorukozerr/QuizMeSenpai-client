@@ -5,7 +5,7 @@ import { Unauthorized } from '@/components/views/unauthorized';
 
 const Page = () => {
   const {
-    auth: { isSuccess, isLoading }
+    checkAuthQuery: { isSuccess, isLoading }
   } = useTrpc();
 
   return isLoading ? (

@@ -8,7 +8,8 @@ import { ThemeSheet } from '@/components/settings/theme-sheet';
 
 const Page = () => {
   const {
-    auth: { isSuccess, isLoading }
+    checkAuthQuery: { isLoading, isSuccess },
+    logoutMutation: { mutateAsync }
   } = useTrpc();
   const [themeSheetState, setThemeSheetState] = useState({ open: false });
 
@@ -37,7 +38,12 @@ const Page = () => {
               <Separator w='100%' boc='$foreground' />
               <Text fos='$5'>Profile</Text>
               <Separator w='100%' boc='$foreground' />
-              <Button variant='outlined'>Logout</Button>
+              <Button
+                variant='outlined'
+                onPress={async () => await mutateAsync()}
+              >
+                Logout
+              </Button>
             </Fragment>
           ) : null}
         </View>

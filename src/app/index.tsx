@@ -5,8 +5,10 @@ import { Unauthorized } from '@/components/views/unauthorized';
 
 const Page = () => {
   const {
-    auth: { isSuccess, isLoading }
+    checkAuthQuery: { isSuccess, data, isLoading }
   } = useTrpc();
+
+  console.log({ isSuccess, data });
 
   return isLoading ? (
     <View w-='100%' h='100%' dsp='flex' jc='center' ai='center'>

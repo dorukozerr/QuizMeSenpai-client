@@ -20,7 +20,7 @@ export const Unauthorized = () => {
         Authentication Required
       </Text>
       <Text fontSize='$3' color='$mutedForeground' textAlign='center'>
-        Please sign in to access this content
+        Please sign in first.
       </Text>
       <Button variant='outlined' onPress={() => router.push('/authentication')}>
         Go to Login
