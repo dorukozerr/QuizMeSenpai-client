@@ -13,7 +13,7 @@ const Page = () => {
     undefined,
     { retry: false }
   );
-  const {} = trpc.auth.logout.useMutation({
+  const { mutateAsync } = trpc.auth.logout.useMutation({
     onSuccess: () => utils.auth.checkAuth.invalidate()
   });
   const [themeSheetState, setThemeSheetState] = useState({ open: false });

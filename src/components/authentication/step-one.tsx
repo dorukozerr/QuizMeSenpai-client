@@ -3,7 +3,10 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { YStack, XStack, Text, Input } from 'tamagui';
-import { isValidPhoneNumber } from 'libphonenumber-js';
+import {
+  isValidPhoneNumber,
+  parsePhoneNumberWithError
+} from 'libphonenumber-js';
 
 import { countries } from '@/constants/countries';
 import { CountryCodeSheet } from '@/components/authentication/country-code-sheet';
@@ -53,7 +56,7 @@ export const StepOne = ({
   const onSubmit: SubmitHandler<LoginFormValues> = ({
     countryCode,
     phoneNumber
-  }) => login(`${countryCode}${phoneNumber}`);
+  }) => login(parsePhoneNumberWithError(`${countryCode}${phoneNumber}`).number);
 
   return (
     <Fragment>
@@ -68,7 +71,9 @@ export const StepOne = ({
               px='$3'
               h='$4'
             >
-              {getValues('countryCode') ? getValues('countryCode') : 'Code'}
+              {getValues('countryCode')
+                ? getValues('countryCode')
+                : 'Country Code'}
             </Button>
             <Controller
               control={control}
