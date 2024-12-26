@@ -1,12 +1,12 @@
 import { Spinner, View, H1 } from 'tamagui';
 
-import { useTrpc } from '@/hooks/use-trpc';
+import { trpc } from '@/lib/trpc';
 import { Unauthorized } from '@/components/views/unauthorized';
 
 const Page = () => {
-  const {
-    checkAuthQuery: { isSuccess, isLoading }
-  } = useTrpc();
+  const { isLoading, isSuccess } = trpc.auth.checkAuth.useQuery(undefined, {
+    retry: false
+  });
 
   return isLoading ? (
     <View w-='100%' h='100%' dsp='flex' jc='center' ai='center'>

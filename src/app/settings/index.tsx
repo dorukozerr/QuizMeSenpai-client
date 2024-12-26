@@ -2,20 +2,26 @@ import { useState, Fragment } from 'react';
 import { Pressable } from 'react-native';
 import { Spinner, YStack, View, H2, Text, Separator } from 'tamagui';
 
-import { useTrpc } from '@/hooks/use-trpc';
+import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/waifui/button';
 import { ThemeSheet } from '@/components/settings/theme-sheet';
 import { UpdateProfileSheet } from '@/components/settings/update-profile-sheet';
 
 const Page = () => {
-  const {
-    checkAuthQuery: { isLoading, isSuccess, data },
-    logoutMutation: { mutateAsync }
-  } = useTrpc();
+  const utils = trpc.useUtils();
+  const { isLoading, isSuccess, data } = trpc.auth.checkAuth.useQuery(
+    undefined,
+    { retry: false }
+  );
+  const {} = trpc.auth.logout.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
+  });
   const [themeSheetState, setThemeSheetState] = useState({ open: false });
   const [updateProfileSheetState, setUpdateProfileSheetState] = useState({
     open: false
   });
+
+  console.log({ isLoading, isSuccess });
 
   return isLoading ? (
     <View w='100%' h='100%' dsp='flex' jc='center' ai='center'>

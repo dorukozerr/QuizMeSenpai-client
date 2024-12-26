@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { YStack, XStack, Text, Input } from 'tamagui';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
-import { useTrpc } from '@/hooks/use-trpc';
 import { countries } from '@/constants/countries';
 import { CountryCodeSheet } from '@/components/authentication/country-code-sheet';
 import { Button } from '@/components/waifui/button';
@@ -33,9 +32,11 @@ const loginSchema = z
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const StepOne = ({
-  onSuccess
+  login,
+  isLoading
 }: {
-  onSuccess: ({ p, h }: { p: string; h: string }) => void;
+  login: (phoneNumber: string) => void;
+  isLoading: boolean;
 }) => {
   const {
     control,
@@ -47,26 +48,12 @@ export const StepOne = ({
     resolver: zodResolver(loginSchema),
     defaultValues: { countryCode: '', phoneNumber: '' }
   });
-  const {
-    loginMutation: { mutateAsync, isLoading }
-  } = useTrpc();
   const [sheetState, setSheetState] = useState({ open: false });
 
-  const onLogin: SubmitHandler<LoginFormValues> = async ({
+  const onSubmit: SubmitHandler<LoginFormValues> = ({
     countryCode,
     phoneNumber
-  }) => {
-    const res = await mutateAsync({
-      phoneNumber: `${countryCode}${phoneNumber}`
-    });
-
-    if (res.success) {
-      onSuccess({
-        p: `${countryCode}${phoneNumber}`,
-        h: res.hash
-      });
-    }
-  };
+  }) => login(`${countryCode}${phoneNumber}`);
 
   return (
     <Fragment>
@@ -106,7 +93,7 @@ export const StepOne = ({
           {errors['phoneNumber'] ? (
             <Text>{errors?.['phoneNumber']?.message as string}</Text>
           ) : null}
-          <Button disabled={isLoading} onPress={handleSubmit(onLogin)}>
+          <Button disabled={isLoading} onPress={handleSubmit(onSubmit)}>
             Login
           </Button>
         </Fragment>

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useToastController } from '@tamagui/toast';
 
-import { useTrpc } from '@/hooks/use-trpc';
+import { trpc } from '@/lib/trpc';
 import {
   Sheet,
   SheetOverlay,
@@ -32,9 +32,10 @@ export const UpdateProfileSheet = ({
   onOpenChange: () => void;
   username?: string;
 }) => {
-  const {
-    updateUserMutation: { mutateAsync, isLoading }
-  } = useTrpc();
+  const utils = trpc.useUtils();
+  const { mutateAsync, isLoading } = trpc.user.update.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
+  });
   const {
     control,
     handleSubmit,
@@ -48,7 +49,7 @@ export const UpdateProfileSheet = ({
 
   useEffect(() => {
     username && setValue('username', username);
-  }, [username, open]);
+  }, [username]);
 
   const onUpdate: SubmitHandler<ProfileFormValues> = async ({ username }) => {
     try {

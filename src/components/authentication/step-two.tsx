@@ -1,11 +1,7 @@
-import { useRouter } from 'expo-router';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { YStack, Text, Input } from 'tamagui';
-import { useToastController } from '@tamagui/toast';
-
-import { useTrpc } from '@/hooks/use-trpc';
 import { Button } from '@/components/waifui/button';
 
 const authSchema = z.object({
@@ -18,11 +14,12 @@ const authSchema = z.object({
 type AuthFormValues = z.infer<typeof authSchema>;
 
 export const StepTwo = ({
-  authPayload
+  authenticate,
+  isLoading
 }: {
-  authPayload: { phoneNumber: string; hash: string };
+  authenticate: (otp: string) => void;
+  isLoading: boolean;
 }) => {
-  const { navigate } = useRouter();
   const {
     control,
     handleSubmit,
@@ -31,35 +28,9 @@ export const StepTwo = ({
     resolver: zodResolver(authSchema),
     defaultValues: { otp: '' }
   });
-  const {
-    authenticateMutation: { mutateAsync, isLoading }
-  } = useTrpc();
-  const toast = useToastController();
 
-  const onAuthenticate: SubmitHandler<AuthFormValues> = async ({ otp }) => {
-    try {
-      const res = await mutateAsync({ ...authPayload, otp });
-
-      if (res.success) {
-        navigate('/');
-
-        toast.show('Success', {
-          myPreset: 'success',
-          duration: 5000,
-          message: 'Authentication successfull.'
-        });
-      }
-    } catch (error: unknown) {
-      console.error('error =>', error);
-
-      toast.show('Error', {
-        myPreset: 'error',
-        duration: 5000,
-        message:
-          (error as { message?: string })?.message ?? 'Unknown server error.'
-      });
-    }
-  };
+  const onSubmit: SubmitHandler<AuthFormValues> = ({ otp }) =>
+    authenticate(otp);
 
   return (
     <YStack w='100%' h='100%' jc='center' ai='center' gap='$4'>
@@ -81,7 +52,7 @@ export const StepTwo = ({
         )}
       />
       {errors['otp'] ? <Text>{errors?.['otp']?.message as string}</Text> : null}
-      <Button disabled={isLoading} onPress={handleSubmit(onAuthenticate)}>
+      <Button disabled={isLoading} onPress={handleSubmit(onSubmit)}>
         Submit
       </Button>
     </YStack>

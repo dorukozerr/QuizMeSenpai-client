@@ -1,27 +1,82 @@
 import { useState } from 'react';
-import { YStack, Text } from 'tamagui';
+import { useRouter } from 'expo-router';
+import { YStack } from 'tamagui';
+import { useToastController } from '@tamagui/toast';
 
+import { trpc } from '@/lib/trpc';
 import { StepOne } from '@/components/authentication/step-one';
 import { StepTwo } from '@/components/authentication/step-two';
 
 const Page = () => {
-  const [step, setStep] = useState(0);
-  const [authPayload, setAuthPayload] = useState({
-    phoneNumber: '',
-    hash: ''
+  const { navigate } = useRouter();
+  const toast = useToastController();
+  const utils = trpc.useUtils();
+  const loginMutation = trpc.auth.login.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
   });
+  const authenticateMutation = trpc.auth.authenticate.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
+  });
+  const [step, setStep] = useState(0);
+  const [authPayload, setAuthPayload] = useState({ phoneNumber: '', hash: '' });
+
+  const handleLogin = async (phoneNumber: string) => {
+    try {
+      const res = await loginMutation.mutateAsync({ phoneNumber });
+
+      if (res.success) {
+        setAuthPayload({ phoneNumber, hash: res.hash });
+        setStep(1);
+      }
+    } catch (error) {
+      console.error('error =>', error);
+
+      toast.show('Error', {
+        myPreset: 'error',
+        duration: 5000,
+        message:
+          (error as { message?: string })?.message ?? 'Unknown server error.'
+      });
+    }
+  };
+
+  const handleAuthenticate = async (otp: string) => {
+    try {
+      const res = await authenticateMutation.mutateAsync({
+        ...authPayload,
+        otp
+      });
+
+      if (res.success) {
+        navigate('/');
+
+        toast.show('Success', {
+          myPreset: 'success',
+          duration: 5000,
+          message: 'Authentication successfull.'
+        });
+      }
+    } catch (error) {
+      console.error('error =>', error);
+
+      toast.show('Error', {
+        myPreset: 'error',
+        duration: 5000,
+        message:
+          (error as { message?: string })?.message ?? 'Unknown server error.'
+      });
+    }
+  };
 
   return (
     <YStack w='100%' h='100%' jc='center' ai='center' gap='$4'>
       {step === 0 ? (
-        <StepOne
-          onSuccess={({ p, h }) => {
-            setAuthPayload({ phoneNumber: p, hash: h });
-            setStep(1);
-          }}
-        />
+        <StepOne login={handleLogin} isLoading={loginMutation.isLoading} />
       ) : step === 1 ? (
-        <StepTwo authPayload={authPayload} />
+        <StepTwo
+          authenticate={handleAuthenticate}
+          isLoading={authenticateMutation.isLoading}
+        />
       ) : null}
     </YStack>
   );
