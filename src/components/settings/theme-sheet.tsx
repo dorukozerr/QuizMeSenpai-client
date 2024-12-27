@@ -33,29 +33,29 @@ export const ThemeSheet = ({
     {
       label: (
         <XStack {...XStackStyles}>
-          <Sun color='$secondaryForeground' />
-          <Text col='$secondaryForeground'>Light</Text>
+          <Sun color='$primaryForeground' />
+          <Text col='$primaryForeground'>Light</Text>
         </XStack>
       ),
-      onPress: () => setTheme('light')
+      changeTheme: () => setTheme('light')
     },
     {
       label: (
         <XStack {...XStackStyles}>
-          <Moon color='$secondaryForeground' />
-          <Text col='$secondaryForeground'>Dark</Text>
+          <Moon color='$primaryForeground' />
+          <Text col='$primaryForeground'>Dark</Text>
         </XStack>
       ),
-      onPress: () => setTheme('dark')
+      changeTheme: () => setTheme('dark')
     },
     {
       label: (
         <XStack {...XStackStyles}>
-          <Computer color='$secondaryForeground' />
-          <Text col='$secondaryForeground'>System</Text>
+          <Computer color='$primaryForeground' />
+          <Text col='$primaryForeground'>System</Text>
         </XStack>
       ),
-      onPress: () => setTheme(systemTheme ? systemTheme : 'dark')
+      changeTheme: () => setTheme(systemTheme ? systemTheme : 'dark')
     }
   ];
 
@@ -65,11 +65,11 @@ export const ThemeSheet = ({
       <SheetHandle />
       <SheetFrame>
         <YStack p='$4' gap='$4'>
-          {themeOptions.map(({ label, onPress }, index) => (
+          {themeOptions.map(({ label, changeTheme }, index) => (
             <Button
               key={`themeSwitchButton-${index}`}
               onPress={() => {
-                onPress();
+                changeTheme();
                 onOpenChange();
               }}
             >

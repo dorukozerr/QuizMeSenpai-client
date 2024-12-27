@@ -1,7 +1,8 @@
-import { Spinner, View, H1 } from 'tamagui';
+import { Spinner, View, YStack, Text } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
 import { Unauthorized } from '@/components/views/unauthorized';
+import { Button } from '@/components/waifui/button';
 
 const Page = () => {
   const { isLoading, isSuccess } = trpc.auth.checkAuth.useQuery(undefined, {
@@ -13,8 +14,9 @@ const Page = () => {
       <Spinner size='large' color='$primary' />
     </View>
   ) : isSuccess ? (
-    <View>
-      <H1>Root</H1>
+    <View w='100%' h='100%' jc='center' ai='center' gap='$4' p='$4'>
+      <Button>Join a room</Button>
+      <Button>Create a room</Button>
     </View>
   ) : (
     <Unauthorized />

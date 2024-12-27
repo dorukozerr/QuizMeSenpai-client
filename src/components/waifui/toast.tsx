@@ -3,8 +3,6 @@ import { useToastState, Toast as TamaguiToast } from '@tamagui/toast';
 export const Toast = () => {
   const toast = useToastState();
 
-  console.log({ toast });
-
   if (!toast || toast.isHandledNatively) {
     return null;
   }

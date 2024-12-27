@@ -21,8 +21,6 @@ const Page = () => {
     open: false
   });
 
-  console.log({ isLoading, isSuccess });
-
   return isLoading ? (
     <View w='100%' h='100%' dsp='flex' jc='center' ai='center'>
       <Spinner size='large' color='$primary' />
