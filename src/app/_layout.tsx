@@ -1,5 +1,5 @@
 import { SafeAreaView, StatusBar } from 'react-native';
-import { Slot } from 'expo-router';
+import { Slot, usePathname } from 'expo-router';
 import { View } from 'tamagui';
 import { ToastViewport } from '@tamagui/toast';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,8 +10,11 @@ import { Navigation } from '@/components/layout/navigation';
 import { Toast } from '@/components/waifui/toast';
 
 const RootLayout = () => {
-  const activeTheme = useThemeStore((state) => state.activeTheme);
+  const pathname = usePathname();
   const { left, top, right } = useSafeAreaInsets();
+  const activeTheme = useThemeStore((state) => state.activeTheme);
+
+  console.log({ pathname });
 
   return (
     <Providers>
@@ -35,7 +38,9 @@ const RootLayout = () => {
           <Slot />
           <Toast />
         </View>
-        <Navigation />
+        {!pathname.includes('room') && !pathname.includes('game') && (
+          <Navigation />
+        )}
         <ToastViewport
           flexDirection='column-reverse'
           top={top}

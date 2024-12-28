@@ -15,6 +15,7 @@
     "format": "prettier ./src --check"
   },
   "dependencies": {
+    "@expo/metro-runtime": "^4.0.0",
     "@hookform/resolvers": "^3.9.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@tamagui/babel-plugin": "^1.120.2",
@@ -40,6 +41,7 @@
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "^4.4.0",
     "react-native-svg": "15.8.0",
+    "react-native-web": "^0.19.13",
     "tamagui": "^1.120.2",
     "zod": "^3.24.1",
     "zustand": "^5.0.2"

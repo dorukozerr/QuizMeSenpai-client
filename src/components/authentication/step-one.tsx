@@ -71,9 +71,7 @@ export const StepOne = ({
               px='$3'
               h='$4'
             >
-              {getValues('countryCode')
-                ? getValues('countryCode')
-                : 'Country Code'}
+              {getValues('countryCode') ? getValues('countryCode') : 'Country'}
             </Button>
             <Controller
               control={control}
