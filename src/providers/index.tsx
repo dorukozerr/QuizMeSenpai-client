@@ -1,5 +1,5 @@
 import { useState, ReactNode } from 'react';
-import { httpBatchLink } from '@trpc/react-query';
+import { httpBatchLink, loggerLink, splitLink } from '@trpc/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createWSClient, wsLink } from '@trpc/client/links/wsLink';
 import { TamaguiProvider, PortalProvider } from 'tamagui';
@@ -23,13 +23,23 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        httpBatchLink({
-          url: SERVER_URL,
-          headers: {
-            credentials: 'include'
-          }
+        loggerLink({
+          enabled: (opts) =>
+            process.env.NODE_ENV === 'development' ||
+            (opts.direction === 'down' && opts.result instanceof Error)
         }),
-        wsLink({ client: createWSClient({ url: WEBSOCKET_URL }) })
+        splitLink({
+          condition: (op) => op.type === 'subscription',
+          false: httpBatchLink({
+            url: SERVER_URL,
+            headers: {
+              credentials: 'include'
+            }
+          }),
+          true: wsLink({
+            client: createWSClient({ url: WEBSOCKET_URL })
+          })
+        })
       ]
     })
   );
