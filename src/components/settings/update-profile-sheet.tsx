@@ -48,7 +48,9 @@ export const UpdateProfileSheet = ({
   const toast = useToastController();
 
   useEffect(() => {
-    username && setValue('username', username);
+    if (username) {
+      setValue('username', username);
+    }
   }, [username, open]);
 
   const onUpdate: SubmitHandler<ProfileFormValues> = async ({ username }) => {

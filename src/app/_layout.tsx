@@ -14,8 +14,6 @@ const RootLayout = () => {
   const { left, top, right } = useSafeAreaInsets();
   const activeTheme = useThemeStore((state) => state.activeTheme);
 
-  console.log({ pathname });
-
   return (
     <Providers>
       <SafeAreaView
