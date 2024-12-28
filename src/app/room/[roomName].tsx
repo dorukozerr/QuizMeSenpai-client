@@ -4,7 +4,7 @@ import { View, Spinner } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
 import { RoomProps } from '@/types';
-import { PreGame } from '@/components/room/pregame';
+import { PreGame } from '@/components/room/pre-game';
 
 const Page = () => {
   const [roomState, setRoomState] = useState<RoomProps | null>(null);
@@ -15,7 +15,7 @@ const Page = () => {
   const leaveRoomMutation = trpc.room.leaveRoom.useMutation();
 
   trpc.room.roomState.useSubscription(
-    { roomName },
+    { roomId: enterRoomMutation.data?.roomId ?? '' },
     { onData: (state) => setRoomState(state) }
   );
 

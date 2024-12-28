@@ -23,22 +23,11 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
-        loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === 'development' ||
-            (opts.direction === 'down' && opts.result instanceof Error)
-        }),
+        loggerLink({ enabled: () => process.env.NODE_ENV === 'development' }),
         splitLink({
           condition: (op) => op.type === 'subscription',
-          false: httpBatchLink({
-            url: SERVER_URL,
-            headers: {
-              credentials: 'include'
-            }
-          }),
-          true: wsLink({
-            client: createWSClient({ url: WEBSOCKET_URL })
-          })
+          false: httpBatchLink({ url: SERVER_URL }),
+          true: wsLink({ client: createWSClient({ url: WEBSOCKET_URL }) })
         })
       ]
     })

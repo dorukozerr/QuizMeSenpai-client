@@ -7,4 +7,8 @@ export interface RoomProps {
   state: 'pre-game' | 'in-game';
   participants: { _id: string; username: string }[];
   readyChecks: { _id: string }[];
+  gameSettings: {
+    questionsPerUser: 5 | 10 | 15 | 20;
+    answerPeriod: 10 | 20 | 30;
+  };
 }
