@@ -7,7 +7,6 @@ import { ToastProvider } from '@tamagui/toast';
 
 import { trpc } from '@/lib/trpc';
 import { useThemeStore } from '@/stores/theme';
-
 import { tamaguiConfig } from '../../tamagui.config';
 
 const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL;
@@ -26,7 +25,14 @@ export const Providers = ({ children }: { children: ReactNode }) => {
         loggerLink({ enabled: () => process.env.NODE_ENV === 'development' }),
         splitLink({
           condition: (op) => op.type === 'subscription',
-          false: httpBatchLink({ url: SERVER_URL }),
+          false: httpBatchLink({
+            url: SERVER_URL,
+            fetch: (url, options) =>
+              fetch(url, {
+                ...options,
+                credentials: 'include'
+              })
+          }),
           true: wsLink({ client: createWSClient({ url: WEBSOCKET_URL }) })
         })
       ]
@@ -37,7 +43,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <TamaguiProvider config={tamaguiConfig} defaultTheme={activeTheme}>
-          <PortalProvider shouldAddRootHost>
+          <PortalProvider>
             <ToastProvider>{children}</ToastProvider>
           </PortalProvider>
         </TamaguiProvider>

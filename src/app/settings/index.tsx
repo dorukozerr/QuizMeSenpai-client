@@ -56,13 +56,17 @@ const Page = () => {
         ) : null}
       </YStack>
       <ThemeSheet
-        open={themeSheetState.open}
-        onOpenChange={() => setThemeSheetState({ open: false })}
+        {...{
+          open: themeSheetState.open,
+          onOpenChange: () => setThemeSheetState({ open: false })
+        }}
       />
       <UpdateProfileSheet
-        open={updateProfileSheetState.open}
-        onOpenChange={() => setUpdateProfileSheetState({ open: false })}
-        username={data?.username}
+        {...{
+          open: updateProfileSheetState.open,
+          onOpenChange: () => setUpdateProfileSheetState({ open: false }),
+          username: data?.username
+        }}
       />
     </Fragment>
   );

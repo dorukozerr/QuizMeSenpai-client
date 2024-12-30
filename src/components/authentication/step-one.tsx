@@ -102,11 +102,13 @@ export const StepOne = ({
         </Fragment>
       </YStack>
       <CountryCodeSheet
-        open={sheetState.open}
-        onOpenChange={() => setSheetState({ open: false })}
-        onCountryCodeSelection={(code: string) => {
-          setValue('countryCode', code);
-          setSheetState({ open: false });
+        {...{
+          open: sheetState.open,
+          onOpenChange: () => setSheetState({ open: false }),
+          onCountryCodeSelection: (code: string) => {
+            setValue('countryCode', code);
+            setSheetState({ open: false });
+          }
         }}
       />
     </Fragment>

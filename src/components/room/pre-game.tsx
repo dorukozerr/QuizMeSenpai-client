@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { useRouter } from 'expo-router';
-import { YStack, XStack, Text } from 'tamagui';
+import { YStack, XStack, Text, ScrollView } from 'tamagui';
 import { Settings } from '@tamagui/lucide-icons';
 
 import { trpc } from '@/lib/trpc';
@@ -36,12 +36,51 @@ export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
         <Text>Admin - {adminData?.username} </Text>
         <XStack gap='$4'>
           <Text>
-            Questions per User - {roomState.gameSettings.questionsPerUser}
+            Questions per user - {roomState.gameSettings.questionsPerUser}
           </Text>
-          <Text>Answer period - {roomState.gameSettings.answerPeriod}</Text>
+          <Text>Answer period - {roomState.gameSettings.answerPeriod}s</Text>
         </XStack>
-        <YStack f={1} bc='$pink4'></YStack>
-        <YStack f={1} bc='$pink4'></YStack>
+        <YStack h='100%' f={1} bc='$pink4'>
+          <Text>Users</Text>
+          <ScrollView>
+            <YStack>
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+              {roomState.participants.map(({ _id, username }) => (
+                <Text key={`participant-${_id}`}>{username}</Text>
+              ))}
+            </YStack>
+          </ScrollView>
+        </YStack>
+        <YStack h='100%' f={1} bc='$pink4'></YStack>
         <Button onPress={() => push('/')}>Leave Room</Button>
       </YStack>
       <AdminSheet
