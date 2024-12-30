@@ -8,17 +8,19 @@ import { ThemeSheet } from '@/components/settings/theme-sheet';
 import { UpdateProfileSheet } from '@/components/settings/update-profile-sheet';
 
 const Page = () => {
+  const [themeSheetState, setThemeSheetState] = useState({ open: false });
+  const [updateProfileSheetState, setUpdateProfileSheetState] = useState({
+    open: false
+  });
+
   const utils = trpc.useUtils();
+
   const { isLoading, isSuccess, data } = trpc.auth.checkAuth.useQuery(
     undefined,
     { retry: false }
   );
   const { mutateAsync } = trpc.auth.logout.useMutation({
     onSuccess: () => utils.auth.checkAuth.invalidate()
-  });
-  const [themeSheetState, setThemeSheetState] = useState({ open: false });
-  const [updateProfileSheetState, setUpdateProfileSheetState] = useState({
-    open: false
   });
 
   return isLoading ? (

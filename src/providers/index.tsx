@@ -17,7 +17,6 @@ if (!SERVER_URL || !WEBSOCKET_URL) {
 }
 
 export const Providers = ({ children }: { children: ReactNode }) => {
-  const activeTheme = useThemeStore((state) => state.activeTheme);
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -38,6 +37,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
       ]
     })
   );
+
+  const activeTheme = useThemeStore((state) => state.activeTheme);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

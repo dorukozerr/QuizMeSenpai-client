@@ -11,17 +11,19 @@ import { Unauthorized } from '@/components/views/unauthorized';
 const roomSchema = z.object({
   roomName: z
     .string()
-    .min(5, { message: 'Room name can be minimum 5 characters.' })
-    .max(30, { message: 'Room name can be maximum 30 characters.' })
+    .min(3, { message: 'Room name can be minimum 5 characters.' })
+    .max(15, { message: 'Room name can be maximum 30 characters.' })
 });
 
 type RoomFormValues = z.infer<typeof roomSchema>;
 
 const Page = () => {
+  const { push } = useRouter();
+
   const { isLoading, isSuccess } = trpc.auth.checkAuth.useQuery(undefined, {
     retry: false
   });
-  const { push } = useRouter();
+
   const {
     control,
     handleSubmit,

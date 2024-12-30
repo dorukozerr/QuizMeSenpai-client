@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { YStack, Input, ScrollView, View } from 'tamagui';
 import { X } from '@tamagui/lucide-icons';
 
-import { countries } from '@/constants/countries';
+import { countries } from '@/utils/countries';
 import { Sheet, SheetOverlay, SheetFrame } from '@/components/waifui/sheet';
 import { Button } from '@/components/waifui/button';
 

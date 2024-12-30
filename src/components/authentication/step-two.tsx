@@ -17,7 +17,7 @@ export const StepTwo = ({
   authenticate,
   isLoading
 }: {
-  authenticate: (otp: string) => void;
+  authenticate: ({ otp }: { otp: string }) => void;
   isLoading: boolean;
 }) => {
   const {
@@ -30,7 +30,7 @@ export const StepTwo = ({
   });
 
   const onSubmit: SubmitHandler<AuthFormValues> = ({ otp }) =>
-    authenticate(otp);
+    authenticate({ otp });
 
   return (
     <YStack w='100%' h='100%' jc='center' ai='center' gap='$4'>

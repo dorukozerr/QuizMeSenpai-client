@@ -18,8 +18,9 @@ export const ThemeSheet = ({
   open: boolean;
   onOpenChange: () => void;
 }) => {
-  const setTheme = useThemeStore((state) => state.setTheme);
   const systemTheme = useColorScheme();
+
+  const setTheme = useThemeStore((state) => state.setTheme);
 
   const XStackStyles = {
     dsp: 'flex',

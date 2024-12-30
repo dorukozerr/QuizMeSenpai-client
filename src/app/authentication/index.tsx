@@ -9,29 +9,33 @@ import { StepTwo } from '@/components/authentication/step-two';
 
 const Page = () => {
   const { navigate } = useRouter();
-  const toast = useToastController();
-  const utils = trpc.useUtils();
-  const loginMutation = trpc.auth.login.useMutation({
-    onSuccess: () => utils.auth.checkAuth.invalidate()
-  });
-  const authenticateMutation = trpc.auth.authenticate.useMutation({
-    onSuccess: () => utils.auth.checkAuth.invalidate()
-  });
+
+  const { show: showToast } = useToastController();
+
   const [step, setStep] = useState(0);
   const [authPayload, setAuthPayload] = useState({ phoneNumber: '', hash: '' });
 
-  const handleLogin = async (phoneNumber: string) => {
-    try {
-      const res = await loginMutation.mutateAsync({ phoneNumber });
+  const utils = trpc.useUtils();
 
-      if (res.success) {
-        setAuthPayload({ phoneNumber, hash: res.hash });
+  const loginMutation = trpc.auth.login.useMutation();
+  const authenticateMutation = trpc.auth.authenticate.useMutation({
+    onSuccess: () => utils.auth.checkAuth.invalidate()
+  });
+
+  const handleLogin = async ({ phoneNumber }: { phoneNumber: string }) => {
+    try {
+      const { success, hash } = await loginMutation.mutateAsync({
+        phoneNumber
+      });
+
+      if (success) {
+        setAuthPayload({ phoneNumber, hash });
         setStep(1);
       }
     } catch (error) {
       console.error('error =>', error);
 
-      toast.show('Error', {
+      showToast('Error', {
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'
@@ -39,17 +43,17 @@ const Page = () => {
     }
   };
 
-  const handleAuthenticate = async (otp: string) => {
+  const handleAuthenticate = async ({ otp }: { otp: string }) => {
     try {
-      const res = await authenticateMutation.mutateAsync({
+      const { success } = await authenticateMutation.mutateAsync({
         ...authPayload,
         otp
       });
 
-      if (res.success) {
+      if (success) {
         navigate('/');
 
-        toast.show('Success', {
+        showToast('Success', {
           duration: 5000,
           message: 'Authentication successfull.'
         });
@@ -57,7 +61,7 @@ const Page = () => {
     } catch (error) {
       console.error('error =>', error);
 
-      toast.show('Error', {
+      showToast('Error', {
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'

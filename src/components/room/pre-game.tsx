@@ -1,20 +1,16 @@
 import { useState, Fragment } from 'react';
 import { useRouter } from 'expo-router';
-import { YStack, XStack, Text, ScrollView } from 'tamagui';
-import { Settings } from '@tamagui/lucide-icons';
+import { YStack, XStack, Text, ScrollView, Input } from 'tamagui';
+import { Ellipsis, Send } from '@tamagui/lucide-icons';
 
-import { trpc } from '@/lib/trpc';
 import { RoomProps } from '@/types';
-import { AdminSheet } from '@/components/room/admin-sheet';
+import { ActionsSheet } from '@/components/room/actions-sheet';
 import { Button } from '@/components/waifui/button';
 
 export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
-  const [adminSheetState, setAdminSheetState] = useState({ open: false });
   const { push } = useRouter();
-  const { data: userData } = trpc.auth.checkAuth.useQuery();
-  const { data: adminData } = trpc.user.getUserInfo.useQuery({
-    userId: roomState.roomAdmin
-  });
+
+  const [sheetState, setSheetState] = useState({ open: false });
 
   return (
     <Fragment>
@@ -23,70 +19,46 @@ export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
           <Text fos='$8' col='$foreground'>
             {roomState.roomName}
           </Text>
-          {userData?._id === roomState.roomAdmin ? (
-            <Button
-              size='icon'
-              variant='outlined'
-              onPress={() => setAdminSheetState({ open: true })}
-            >
-              <Settings color='$foreground' />
-            </Button>
-          ) : null}
+          <Button
+            size='icon'
+            variant='outlined'
+            onPress={() => setSheetState({ open: true })}
+          >
+            <Ellipsis color='$foreground' />
+          </Button>
         </XStack>
-        <Text>Admin - {adminData?.username} </Text>
-        <XStack gap='$4'>
-          <Text>
-            Questions per user - {roomState.gameSettings.questionsPerUser}
-          </Text>
-          <Text>Answer period - {roomState.gameSettings.answerPeriod}s</Text>
-        </XStack>
-        <YStack h='100%' f={1} bc='$pink4'>
-          <Text>Users</Text>
+        <YStack h='100%' f={1} gap='$2' p='$4' bw='$1' boc='$border' br='$3'>
+          <Text>Chat</Text>
           <ScrollView>
-            <YStack>
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
+            <YStack gap='$2'>
+              <Text>Message 1</Text>
+              <Text>Message 2</Text>
+              <Text>Message 3</Text>
+            </YStack>
+          </ScrollView>
+          <XStack ai='center' gap='$2'>
+            <Input f={1} />
+            <Button size='icon' h='100%' variant='outlined'>
+              <Send color='$foreground' />
+            </Button>
+          </XStack>
+        </YStack>
+        <YStack h='100%' f={1} gap='$2' p='$4' bw='$1' boc='$border' br='$3'>
+          <Text>Active Users - {roomState.participants.length}</Text>
+          <ScrollView>
+            <YStack gap='$2'>
               {roomState.participants.map(({ _id, username }) => (
                 <Text key={`participant-${_id}`}>{username}</Text>
               ))}
             </YStack>
           </ScrollView>
         </YStack>
-        <YStack h='100%' f={1} bc='$pink4'></YStack>
         <Button onPress={() => push('/')}>Leave Room</Button>
       </YStack>
-      <AdminSheet
+      <ActionsSheet
         {...{
-          open: adminSheetState.open,
-          onOpenChange: () => setAdminSheetState({ open: false }),
+          open: sheetState.open,
+          onOpenChange: () => setSheetState({ open: false }),
           roomState
         }}
       />

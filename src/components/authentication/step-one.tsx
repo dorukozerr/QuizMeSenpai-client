@@ -8,7 +8,7 @@ import {
   parsePhoneNumberWithError
 } from 'libphonenumber-js';
 
-import { countries } from '@/constants/countries';
+import { countries } from '@/utils/countries';
 import { CountryCodeSheet } from '@/components/authentication/country-code-sheet';
 import { Button } from '@/components/waifui/button';
 
@@ -38,9 +38,11 @@ export const StepOne = ({
   login,
   isLoading
 }: {
-  login: (phoneNumber: string) => void;
+  login: ({ phoneNumber }: { phoneNumber: string }) => void;
   isLoading: boolean;
 }) => {
+  const [sheetState, setSheetState] = useState({ open: false });
+
   const {
     control,
     setValue,
@@ -51,12 +53,15 @@ export const StepOne = ({
     resolver: zodResolver(loginSchema),
     defaultValues: { countryCode: '', phoneNumber: '' }
   });
-  const [sheetState, setSheetState] = useState({ open: false });
 
   const onSubmit: SubmitHandler<LoginFormValues> = ({
     countryCode,
     phoneNumber
-  }) => login(parsePhoneNumberWithError(`${countryCode}${phoneNumber}`).number);
+  }) =>
+    login({
+      phoneNumber: parsePhoneNumberWithError(`${countryCode}${phoneNumber}`)
+        .number
+    });
 
   return (
     <Fragment>

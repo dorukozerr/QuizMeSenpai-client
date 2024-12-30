@@ -1,12 +1,12 @@
-import { useState, Fragment } from 'react';
-import { YStack, Text, View, ScrollView } from 'tamagui';
+import { useState } from 'react';
+import { YStack, Text, ScrollView } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
 import { RoomProps } from '@/types';
 import { Sheet, SheetOverlay, SheetFrame } from '@/components/waifui/sheet';
 import { Button } from '@/components/waifui/button';
 
-export const AdminSheet = ({
+export const ActionsSheet = ({
   open,
   onOpenChange,
   roomState
@@ -15,10 +15,11 @@ export const AdminSheet = ({
   onOpenChange: () => void;
   roomState: RoomProps;
 }) => {
+  const assignNewAdmin = trpc.room.assignNewAdmin.useMutation();
+
   const [sheetState, setSheetState] = useState<
     'overview' | 'changeGameSettings' | 'kickUser' | 'assignNewAdmin'
   >('overview');
-  const assignNewAdmin = trpc.room.assignNewAdmin.useMutation();
 
   const states = {
     overview: (

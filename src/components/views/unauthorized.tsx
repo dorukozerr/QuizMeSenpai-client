@@ -5,7 +5,7 @@ import { Lock } from '@tamagui/lucide-icons';
 import { Button } from '@/components/waifui/button';
 
 export const Unauthorized = () => {
-  const router = useRouter();
+  const { push } = useRouter();
 
   return (
     <YStack
@@ -22,7 +22,7 @@ export const Unauthorized = () => {
       <Text fontSize='$3' color='$mutedForeground' textAlign='center'>
         Please sign in first.
       </Text>
-      <Button variant='outlined' onPress={() => router.push('/authentication')}>
+      <Button variant='outlined' onPress={() => push('/authentication')}>
         Go to Login
       </Button>
     </YStack>

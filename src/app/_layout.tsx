@@ -11,7 +11,9 @@ import { Toast } from '@/components/waifui/toast';
 
 const RootLayout = () => {
   const pathname = usePathname();
+
   const { left, top, right } = useSafeAreaInsets();
+
   const activeTheme = useThemeStore((state) => state.activeTheme);
 
   return (

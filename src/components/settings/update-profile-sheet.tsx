@@ -17,8 +17,8 @@ import { Button } from '@/components/waifui/button';
 const profileSchema = z.object({
   username: z
     .string()
-    .min(5, { message: 'Username can be minimum 5 characters.' })
-    .max(30, { message: 'Username can be maximum 30 characters.' })
+    .min(3, { message: 'Username can be minimum 3 characters.' })
+    .max(15, { message: 'Username can be maximum 15 characters.' })
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -32,10 +32,14 @@ export const UpdateProfileSheet = ({
   onOpenChange: () => void;
   username?: string;
 }) => {
+  const { show: showToast } = useToastController();
+
   const utils = trpc.useUtils();
+
   const { mutateAsync, isLoading } = trpc.user.update.useMutation({
     onSuccess: () => utils.auth.checkAuth.invalidate()
   });
+
   const {
     control,
     handleSubmit,
@@ -45,7 +49,6 @@ export const UpdateProfileSheet = ({
     resolver: zodResolver(profileSchema),
     defaultValues: { username: '' }
   });
-  const toast = useToastController();
 
   useEffect(() => {
     if (username) {
@@ -55,12 +58,12 @@ export const UpdateProfileSheet = ({
 
   const onUpdate: SubmitHandler<ProfileFormValues> = async ({ username }) => {
     try {
-      const res = await mutateAsync({ username });
+      const { success } = await mutateAsync({ username });
 
-      if (res.success) {
+      if (success) {
         onOpenChange();
 
-        toast.show('Success', {
+        showToast('Success', {
           duration: 5000,
           message: 'Username updated.'
         });
@@ -68,7 +71,7 @@ export const UpdateProfileSheet = ({
     } catch (error) {
       console.error('error =>', error);
 
-      toast.show('Error', {
+      showToast('Error', {
         duration: 5000,
         message:
           (error as { message?: string })?.message ?? 'Unknown server error.'

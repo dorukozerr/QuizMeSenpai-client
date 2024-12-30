@@ -7,9 +7,9 @@ import { RoomProps } from '@/types';
 import { PreGame } from '@/components/room/pre-game';
 
 const Page = () => {
-  const [roomState, setRoomState] = useState<RoomProps | null>(null);
-
   const { roomName }: { roomName: string } = useLocalSearchParams();
+
+  const [roomState, setRoomState] = useState<RoomProps | null>(null);
 
   const enterRoomMutation = trpc.room.enterRoom.useMutation();
   const leaveRoomMutation = trpc.room.leaveRoom.useMutation();
@@ -25,7 +25,7 @@ const Page = () => {
     return () => leaveRoomMutation.mutate({ roomName });
   }, []);
 
-  useEffect(() => console.log({ roomState }), [roomState]);
+  // useEffect(() => console.log({ roomState }), [roomState]);
 
   return roomState ? (
     roomState.state === 'pre-game' ? (
