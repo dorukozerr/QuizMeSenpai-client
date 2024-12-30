@@ -1,16 +1,52 @@
-import { useState, Fragment } from 'react';
+import { useRef, useState, Fragment } from 'react';
+import { ScrollView as RNScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { YStack, XStack, Text, ScrollView, Input } from 'tamagui';
 import { Ellipsis, Send } from '@tamagui/lucide-icons';
 
-import { RoomProps } from '@/types';
+import { trpc } from '@/lib/trpc';
+import { RoomProps, Message } from '@/types';
 import { ActionsSheet } from '@/components/room/actions-sheet';
 import { Button } from '@/components/waifui/button';
 
-export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
+const messageSchema = z.object({
+  message: z.string().min(1).max(150)
+});
+
+type MessageFormValues = z.infer<typeof messageSchema>;
+
+export const PreGame = ({
+  roomState,
+  messages
+}: {
+  roomState: RoomProps;
+  messages: Message[];
+}) => {
   const { push } = useRouter();
 
+  const { mutateAsync, isLoading } = trpc.message.sendMessage.useMutation();
+
+  const messageBoxRef = useRef<RNScrollView | null>(null);
+
   const [sheetState, setSheetState] = useState({ open: false });
+
+  const { control, handleSubmit, reset } = useForm<MessageFormValues>({
+    resolver: zodResolver(messageSchema),
+    defaultValues: { message: '' }
+  });
+
+  const onMessageSend: SubmitHandler<MessageFormValues> = async ({
+    message
+  }) => {
+    const { success } = await mutateAsync({ roomId: roomState._id, message });
+
+    if (success) {
+      reset();
+    }
+  };
 
   return (
     <Fragment>
@@ -24,22 +60,48 @@ export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
             variant='outlined'
             onPress={() => setSheetState({ open: true })}
           >
-            <Ellipsis color='$foreground' />
+            <Ellipsis color='$foreground' size={16} />
           </Button>
         </XStack>
         <YStack h='100%' f={1} gap='$2' p='$4' bw='$1' boc='$border' br='$3'>
           <Text>Chat</Text>
-          <ScrollView>
+          <ScrollView
+            ref={messageBoxRef}
+            onContentSizeChange={() =>
+              messageBoxRef?.current?.scrollToEnd({ animated: true })
+            }
+          >
             <YStack gap='$2'>
-              <Text>Message 1</Text>
-              <Text>Message 2</Text>
-              <Text>Message 3</Text>
+              {messages.map(({ _id, owner, message }) => (
+                <Text key={`message-${_id}`}>{`${owner} - ${message}`}</Text>
+              ))}
             </YStack>
           </ScrollView>
           <XStack ai='center' gap='$2'>
-            <Input f={1} />
-            <Button size='icon' h='100%' variant='outlined'>
-              <Send color='$foreground' />
+            <Controller
+              control={control}
+              name='message'
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  f={1}
+                  h='$4'
+                  placeholder='Enter your message...'
+                />
+              )}
+            />
+            <Button
+              size='icon'
+              h='100%'
+              variant='outlined'
+              onPress={handleSubmit(onMessageSend)}
+              disabled={isLoading}
+            >
+              <Send color='$foreground' size={16} />
             </Button>
           </XStack>
         </YStack>
@@ -53,7 +115,9 @@ export const PreGame = ({ roomState }: { roomState: RoomProps }) => {
             </YStack>
           </ScrollView>
         </YStack>
-        <Button onPress={() => push('/')}>Leave Room</Button>
+        <Button w='100%' onPress={() => push('/')}>
+          Leave Room
+        </Button>
       </YStack>
       <ActionsSheet
         {...{

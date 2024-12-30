@@ -11,8 +11,8 @@ import { Unauthorized } from '@/components/views/unauthorized';
 const roomSchema = z.object({
   roomName: z
     .string()
-    .min(3, { message: 'Room name can be minimum 5 characters.' })
-    .max(15, { message: 'Room name can be maximum 30 characters.' })
+    .min(3, { message: 'Room name can be minimum 3 characters.' })
+    .max(15, { message: 'Room name can be maximum 15 characters.' })
 });
 
 type RoomFormValues = z.infer<typeof roomSchema>;

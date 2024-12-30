@@ -1,3 +1,12 @@
+export interface Message {
+  _id: string;
+  roomId: string;
+  ownerId: string;
+  owner: string;
+  message: string;
+  createdAt: string;
+}
+
 export interface RoomProps {
   _id: string;
   roomName: string;
