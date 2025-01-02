@@ -12,7 +12,22 @@ export interface Message {
   createdAt: string;
 }
 
-export interface RoomProps {
+export interface Question {
+  _id: string;
+  ownerId: string;
+  owner: string;
+  question: string;
+  answers: string[];
+  correctAnswerIndex: number;
+}
+
+export interface GameSettings {
+  questionsPerUser: 5 | 10 | 15 | 20;
+  answerPeriod: 30 | 60 | 90 | 120;
+  questions: Question[];
+}
+
+export interface Room {
   _id: string;
   roomName: string;
   creatorId: string;
@@ -21,8 +36,5 @@ export interface RoomProps {
   state: 'pre-game' | 'in-game';
   participants: { _id: string; username: string }[];
   readyChecks: { _id: string }[];
-  gameSettings: {
-    questionsPerUser: 5 | 10 | 15 | 20;
-    answerPeriod: 10 | 20 | 30;
-  };
+  gameSettings: GameSettings;
 }

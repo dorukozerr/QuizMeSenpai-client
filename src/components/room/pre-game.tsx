@@ -8,7 +8,7 @@ import { YStack, XStack, Text, ScrollView, Input } from 'tamagui';
 import { Ellipsis, Send } from '@tamagui/lucide-icons';
 
 import { trpc } from '@/lib/trpc';
-import { RoomProps, Message } from '@/types';
+import { Room, Message } from '@/types';
 import { ActionsSheet } from '@/components/room/actions-sheet';
 import { Button } from '@/components/waifui/button';
 
@@ -22,11 +22,14 @@ export const PreGame = ({
   roomState,
   messages
 }: {
-  roomState: RoomProps;
+  roomState: Room;
   messages: Message[];
 }) => {
   const { push } = useRouter();
 
+  const { data: roomAdmin } = trpc.user.getUsername.useQuery({
+    userId: roomState.roomAdmin
+  });
   const { mutateAsync, isLoading } = trpc.message.sendMessage.useMutation();
 
   const messageBoxRef = useRef<RNScrollView | null>(null);
@@ -105,16 +108,45 @@ export const PreGame = ({
             </Button>
           </XStack>
         </YStack>
-        <YStack h='100%' f={1} gap='$2' p='$4' bw='$1' boc='$border' br='$3'>
-          <Text>Active Users - {roomState.participants.length}</Text>
-          <ScrollView>
+        <XStack h='100%' f={1} gap='$2'>
+          <YStack
+            w='100%'
+            h='100%'
+            f={1}
+            gap='$2'
+            p='$4'
+            bw='$1'
+            boc='$border'
+            br='$3'
+          >
+            <Text>Active Users - {roomState.participants.length}</Text>
+            <ScrollView>
+              <YStack gap='$2'>
+                {roomState.participants.map(({ _id, username }) => (
+                  <Text key={`participant-${_id}`}>{username}</Text>
+                ))}
+              </YStack>
+            </ScrollView>
+          </YStack>
+          <YStack
+            w='100%'
+            h='100%'
+            f={1}
+            gap='$2'
+            p='$4'
+            bw='$1'
+            boc='$border'
+            br='$3'
+          >
             <YStack gap='$2'>
-              {roomState.participants.map(({ _id, username }) => (
-                <Text key={`participant-${_id}`}>{username}</Text>
-              ))}
+              <Text>Room Admin: {roomAdmin?.username}</Text>
+              <Text>
+                Questions per User: {roomState.gameSettings.questionsPerUser}
+              </Text>
+              <Text>Answer Period: {roomState.gameSettings.answerPeriod}</Text>
             </YStack>
-          </ScrollView>
-        </YStack>
+          </YStack>
+        </XStack>
         <Button w='100%' onPress={() => push('/')}>
           Leave Room
         </Button>

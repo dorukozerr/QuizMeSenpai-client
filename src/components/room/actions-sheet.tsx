@@ -1,8 +1,8 @@
 import { useState, useEffect, Fragment } from 'react';
-import { YStack, View, Text, ScrollView } from 'tamagui';
+import { YStack, View, ScrollView, Text } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
-import { RoomProps } from '@/types';
+import { Room } from '@/types';
 import { useUserStore } from '@/stores/user';
 import { Sheet, SheetOverlay, SheetFrame } from '@/components/waifui/sheet';
 import { Button } from '@/components/waifui/button';
@@ -14,10 +14,11 @@ export const ActionsSheet = ({
 }: {
   open: boolean;
   onOpenChange: () => void;
-  roomState: RoomProps;
+  roomState: Room;
 }) => {
   const assignNewAdmin = trpc.room.assignNewAdmin.useMutation();
   const kickUser = trpc.room.kickUser.useMutation();
+  const changeGameSettings = trpc.room.changeGameSettings.useMutation();
 
   const [view, setView] = useState<
     | 'overview'
@@ -34,8 +35,8 @@ export const ActionsSheet = ({
     setView('overview');
   }, [open]);
 
-  const questionPerUserOptions = [5, 10, 15, 20];
-  const answerPeriodOptions = [10, 20, 30];
+  const questionsPerUserOptions = ['5', '10', '15', '20'] as const;
+  const answerPeriodOptions = ['30', '60', '90', '120'] as const;
 
   const states = {
     overview: (
@@ -61,14 +62,71 @@ export const ActionsSheet = ({
     ),
     changeGameSettings: (
       <YStack flex={1} gap='$4'>
-        <Button onPress={() => setView('changeQuestionsPerUser')}>
+        <Button w='100%' onPress={() => setView('changeQuestionsPerUser')}>
           Questions per User
         </Button>
-        <Button onPress={() => setView('changeAnswerPeriod')}>
+        <Button w='100%' onPress={() => setView('changeAnswerPeriod')}>
           Answer Period
         </Button>
         <View f={1} />
-        <Button onPress={() => setView('overview')}>Back</Button>
+        <Button w='100%' onPress={() => setView('overview')}>
+          Back
+        </Button>
+      </YStack>
+    ),
+
+    changeQuestionsPerUser: (
+      <YStack flex={1} gap='$4'>
+        {questionsPerUserOptions.map((option) => (
+          <Button
+            w='100%'
+            key={`questionPerUserOption-${option}`}
+            onPress={async () => {
+              const { success } = await changeGameSettings.mutateAsync({
+                roomId: roomState._id,
+                settingToChange: 'questionsPerUser',
+                newValue: option
+              });
+
+              if (success) {
+                onOpenChange();
+              }
+            }}
+          >
+            {option}
+          </Button>
+        ))}
+        <View f={1} />
+        <Button w='100%' onPress={() => setView('changeGameSettings')}>
+          Back
+        </Button>
+      </YStack>
+    ),
+    changeAnswerPeriod: (
+      <YStack flex={1} gap='$4'>
+        {answerPeriodOptions.map((option) => (
+          <Button
+            w='100%'
+            key={`answerPeriodOption-${option}`}
+            onPress={async () => {
+              const { success } = await changeGameSettings.mutateAsync({
+                roomId: roomState._id,
+                settingToChange: 'answerPeriod',
+                newValue: option
+              });
+
+              if (success) {
+                onOpenChange();
+              }
+            }}
+          >
+            {option}s
+          </Button>
+        ))}
+        <View f={1} />
+        <Button w='100%' onPress={() => setView('changeGameSettings')}>
+          Back
+        </Button>
       </YStack>
     ),
     kickUser: (
@@ -79,6 +137,7 @@ export const ActionsSheet = ({
               .filter(({ _id }) => _id !== userData?._id)
               .map(({ _id, username }) => (
                 <Button
+                  w='100%'
                   key={`participantToKick-${_id}`}
                   onPress={async () => {
                     const { success } = await kickUser.mutateAsync({
@@ -96,7 +155,9 @@ export const ActionsSheet = ({
               ))}
           </YStack>
         </ScrollView>
-        <Button onPress={() => setView('overview')}>Back</Button>
+        <Button w='100%' onPress={() => setView('overview')}>
+          Back
+        </Button>
       </YStack>
     ),
     assignNewAdmin: (
@@ -107,6 +168,7 @@ export const ActionsSheet = ({
               .filter(({ _id }) => _id !== userData?._id)
               .map(({ _id, username }) => (
                 <Button
+                  w='100%'
                   key={`participant-${_id}`}
                   onPress={async () => {
                     const { success } = await assignNewAdmin.mutateAsync({
@@ -124,25 +186,15 @@ export const ActionsSheet = ({
               ))}
           </YStack>
         </ScrollView>
+        <Button w='100%' onPress={() => setView('overview')}>
+          Back
+        </Button>
+      </YStack>
+    ),
+    configureQuestions: (
+      <YStack>
+        <Text>Configure Questions</Text>
         <Button onPress={() => setView('overview')}>Back</Button>
-      </YStack>
-    ),
-    changeQuestionsPerUser: (
-      <YStack flex={1} gap='$4'>
-        {questionPerUserOptions.map((option) => (
-          <Button key={`questionPerUserOption-${option}`}>{option}</Button>
-        ))}
-        <View f={1} />
-        <Button onPress={() => setView('changeGameSettings')}>Back</Button>
-      </YStack>
-    ),
-    changeAnswerPeriod: (
-      <YStack flex={1} gap='$4'>
-        {answerPeriodOptions.map((option) => (
-          <Button key={`answerPeriodOption-${option}`}>{option}</Button>
-        ))}
-        <View f={1} />
-        <Button onPress={() => setView('changeGameSettings')}>Back</Button>
       </YStack>
     )
   };
