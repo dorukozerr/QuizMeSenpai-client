@@ -5,7 +5,13 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { YStack, XStack, Text, ScrollView, Input } from 'tamagui';
-import { Ellipsis, Send } from '@tamagui/lucide-icons';
+import {
+  Ellipsis,
+  Send,
+  Shield,
+  Timer,
+  MessageCircleQuestion
+} from '@tamagui/lucide-icons';
 
 import { trpc } from '@/lib/trpc';
 import { Room, Message } from '@/types';
@@ -123,7 +129,10 @@ export const PreGame = ({
             <ScrollView>
               <YStack gap='$2'>
                 {roomState.participants.map(({ _id, username }) => (
-                  <Text key={`participant-${_id}`}>{username}</Text>
+                  <Text key={`participant-${_id}`}>
+                    {username}
+                    {roomState.roomAdmin === _id ? ' - Admin' : null}
+                  </Text>
                 ))}
               </YStack>
             </ScrollView>
@@ -139,11 +148,18 @@ export const PreGame = ({
             br='$3'
           >
             <YStack gap='$2'>
-              <Text>Room Admin: {roomAdmin?.username}</Text>
-              <Text>
-                Questions per User: {roomState.gameSettings.questionsPerUser}
-              </Text>
-              <Text>Answer Period: {roomState.gameSettings.answerPeriod}</Text>
+              <XStack gap='$2'>
+                <Shield color='$foreground' size={16} />
+                <Text>{roomAdmin?.username}</Text>
+              </XStack>
+              <XStack gap='$2'>
+                <MessageCircleQuestion color='$foreground' size={16} />
+                <Text>{roomState.gameSettings.questionsPerUser}</Text>
+              </XStack>
+              <XStack gap='$2'>
+                <Timer color='$foreground' size={16} />
+                <Text>{roomState.gameSettings.answerPeriod}</Text>
+              </XStack>
             </YStack>
           </YStack>
         </XStack>
