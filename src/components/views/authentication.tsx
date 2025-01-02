@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'expo-router';
 import { YStack } from 'tamagui';
 import { useToastController } from '@tamagui/toast';
 
@@ -7,9 +6,7 @@ import { trpc } from '@/lib/trpc';
 import { StepOne } from '@/components/authentication/step-one';
 import { StepTwo } from '@/components/authentication/step-two';
 
-const Page = () => {
-  const { navigate } = useRouter();
-
+export const Authentication = () => {
   const { show: showToast } = useToastController();
 
   const [step, setStep] = useState(0);
@@ -51,8 +48,6 @@ const Page = () => {
       });
 
       if (success) {
-        navigate('/');
-
         showToast('Success', {
           duration: 5000,
           message: 'Authentication successfull.'
@@ -82,5 +77,3 @@ const Page = () => {
     </YStack>
   );
 };
-
-export default Page;

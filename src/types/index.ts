@@ -1,3 +1,8 @@
+export interface User {
+  _id: string;
+  username: string;
+}
+
 export interface Message {
   _id: string;
   roomId: string;

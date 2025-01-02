@@ -4,6 +4,7 @@ import { View, Spinner } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
 import { RoomProps, Message } from '@/types';
+import { useUserStore } from '@/stores/user';
 import { PreGame } from '@/components/room/pre-game';
 
 const Page = () => {
@@ -13,17 +14,19 @@ const Page = () => {
   const [roomState, setRoomState] = useState<RoomProps | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const { data: userData } = trpc.auth.checkAuth.useQuery();
   const enterRoomMutation = trpc.room.enterRoom.useMutation();
   const leaveRoomMutation = trpc.room.leaveRoom.useMutation();
-  trpc.room.roomState.useSubscription(
+
+  trpc.room.roomSubscription.useSubscription(
     { roomId: enterRoomMutation.data?.roomId ?? '' },
     { onData: (data) => setRoomState(data) }
   );
-  trpc.message.messages.useSubscription(
+  trpc.message.messagesSubscription.useSubscription(
     { roomId: enterRoomMutation.data?.roomId ?? '' },
     { onData: (data) => setMessages(data) }
   );
+
+  const userData = useUserStore((state) => state.userData);
 
   useEffect(() => {
     enterRoomMutation.mutate({ roomName });

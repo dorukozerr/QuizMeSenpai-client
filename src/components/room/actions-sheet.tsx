@@ -3,6 +3,7 @@ import { YStack, View, Text, ScrollView } from 'tamagui';
 
 import { trpc } from '@/lib/trpc';
 import { RoomProps } from '@/types';
+import { useUserStore } from '@/stores/user';
 import { Sheet, SheetOverlay, SheetFrame } from '@/components/waifui/sheet';
 import { Button } from '@/components/waifui/button';
 
@@ -15,7 +16,6 @@ export const ActionsSheet = ({
   onOpenChange: () => void;
   roomState: RoomProps;
 }) => {
-  const { data: userData } = trpc.auth.checkAuth.useQuery();
   const assignNewAdmin = trpc.room.assignNewAdmin.useMutation();
   const kickUser = trpc.room.kickUser.useMutation();
 
@@ -27,6 +27,8 @@ export const ActionsSheet = ({
     | 'changeQuestionsPerUser'
     | 'changeAnswerPeriod'
   >('overview');
+
+  const userData = useUserStore((state) => state.userData);
 
   useEffect(() => {
     setView('overview');

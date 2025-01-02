@@ -2,11 +2,9 @@ import { useRouter } from 'expo-router';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Spinner, View, Input, Text } from 'tamagui';
+import { View, Input, Text } from 'tamagui';
 
-import { trpc } from '@/lib/trpc';
 import { Button } from '@/components/waifui/button';
-import { Unauthorized } from '@/components/views/unauthorized';
 
 const roomSchema = z.object({
   roomName: z
@@ -20,10 +18,6 @@ type RoomFormValues = z.infer<typeof roomSchema>;
 const Page = () => {
   const { push } = useRouter();
 
-  const { isLoading, isSuccess } = trpc.auth.checkAuth.useQuery(undefined, {
-    retry: false
-  });
-
   const {
     control,
     handleSubmit,
@@ -36,11 +30,7 @@ const Page = () => {
   const onSubmit: SubmitHandler<RoomFormValues> = async ({ roomName }) =>
     push(`/room/${roomName}`);
 
-  return isLoading ? (
-    <View w-='100%' h='100%' dsp='flex' jc='center' ai='center'>
-      <Spinner size='large' color='$primary' />
-    </View>
-  ) : isSuccess ? (
+  return (
     <View w='100%' h='100%' p='$4' jc='center' ai='center' gap='$4'>
       <Controller
         control={control}
@@ -61,12 +51,8 @@ const Page = () => {
       {errors['roomName'] ? (
         <Text>{errors?.['roomName']?.message as string}</Text>
       ) : null}
-      <Button disabled={isLoading} onPress={handleSubmit(onSubmit)}>
-        Enter
-      </Button>
+      <Button onPress={handleSubmit(onSubmit)}>Enter</Button>
     </View>
-  ) : (
-    <Unauthorized />
   );
 };
 
